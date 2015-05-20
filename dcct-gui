@@ -1,0 +1,102 @@
+#!/bin/sh
+mine_burst() {
+    POOL=`zenity --forms --width=300 --height=250 --title="dcct-gui ~ Mine Burst" --text="Insert the pool IP" --add-entry="Pool IP" `
+    case $? in
+    0)
+        zenity --question --text="Pool IP is ${POOL}. Are you sure? If yes, press \"OK\"." 
+        case $? in
+            0)
+                select_plot_dir
+                ;;
+            1)
+                mine_burst
+                ;;
+           -1)
+                unknown_error
+                ;;
+        esac   
+        select_plot_dir
+        ;;
+    1)
+        dcct_menu
+        ;;
+    -1)
+        unknown_error
+        ;;
+    esac
+
+}
+select_plot_dir(){
+    zenity --info --text="Now press \"OK\" for select your Plot directory, also you press CONTROL key for select multiple directories, if you want." 
+    case $? in
+        0)
+            FILE=`zenity --file-selection --directory --multiple --separator=";" --title="Select the plot directory"`
+            case $? in
+            0)
+                mine_previous
+                ;;
+            1)
+                mine_burst
+                ;;
+            -1)
+                unknown_eror
+                ;;
+            esac
+            ;;
+        1)
+            mine_burst
+            ;;
+       -1)
+            unknown_error
+            ;;
+    esac
+            
+}
+unknown_error(){
+    zenity --error --text="Unknown error, ask for support in http://www.burstforum.com"
+    exit 1
+}
+mine_previous() {
+    zenity --question --text="The selected Pool IP is ${POOL}. \n The plots directory are: \n `echo ${FILE} | sed -e 's \; \\n g' ` \n ¿Do you want start mining NOW?" 
+    case $? in
+        0)
+            mine_pool_now
+            ;;
+        1)
+            mine_burst
+            ;;
+        -1)
+            unknown_eror
+            ;;
+    esac
+
+
+}
+
+mine_pool_now() {
+    xterm -hold -e ./mine_pool_all ${POOL} `echo ${FILE} | sed -e 's:\;: :g'`
+}
+
+dcct_menu() {
+ choice=`zenity --width=300 --height=250 --list --column="Select an action" --title="dcct-gui"  \
+           "Plot Burst" \
+           "Mine Burst" \
+           "Optimize plots" \
+           "Help"`
+
+ case "${choice}" in 
+    "Plot Burst" )
+        zenity --info "A plottearrr"    
+        ;;
+    "Mine Burst" )
+        mine_burst
+        ;;
+    "Optimize plots" )
+        zenity --info "A optimizarrrr"
+        ;;
+ esac
+
+
+}
+
+dcct_menu
