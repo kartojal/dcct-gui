@@ -1,12 +1,41 @@
-#!/bin/sh
+#!/bin/bash
+# Bash script by Kartojal.
+
+# Principal menu 
+dcct_menu() {
+ choice=`zenity --width=300 --height=250 --list --column="Select an action" --title="dcct-gui"  \
+           "Plot Burst" \
+           "Mine Burst" \
+           "Optimize plots" \
+           "Help"`
+
+ case "${choice}" in 
+    "Plot Burst" )
+        plot_burst
+        ;;
+    "Mine Burst" )
+        mine_burst
+        ;;
+    "Optimize plots" )
+        zenity --text-info --text="A optimizarrrr"
+        ;;
+     *)
+        exit
+         ;;
+ esac
+
+}
+
+# Mine Burst section
+# First, ask the user the pool IP
 mine_burst() {
-    POOL=`zenity --forms --width=300 --height=250 --title="dcct-gui ~ Mine Burst" --text="Insert the pool IP" --add-entry="Pool IP" `
+    POOL=`zenity --forms  --title="dcct-gui ~ Mine Burst" --text="Insert the pool IP" --add-entry="Pool IP" `
     case $? in
     0)
         zenity --question --text="Pool IP is ${POOL}. Are you sure? If yes, press \"OK\"." 
         case $? in
             0)
-                select_plot_dir
+                mine_plot_dir
                 ;;
             1)
                 mine_burst
@@ -26,11 +55,13 @@ mine_burst() {
     esac
 
 }
-select_plot_dir(){
-    zenity --info --text="Now press \"OK\" for select your Plot directory, also you press CONTROL key for select multiple directories, if you want." 
+
+# Ask the users the plots directory/ies.
+mine_plot_dir(){
+    zenity --info --width=380 --height=90 --text="Now press \"OK\" to select your Plot directory, also you can press CONTROL key to select multiple directories, if you want." 
     case $? in
         0)
-            FILE=`zenity --file-selection --directory --multiple --separator=";" --title="Select the plot directory"`
+            FILE=`zenity --file-selection --width=100 --height=100 --directory --multiple --separator=";" --title="Select the plot directory"`
             case $? in
             0)
                 mine_previous
@@ -52,10 +83,12 @@ select_plot_dir(){
     esac
             
 }
+# Unknown error.
 unknown_error(){
     zenity --error --text="Unknown error, ask for support in http://www.burstforum.com"
     exit 1
 }
+# Previous to mine, see all the info and ask if the user want to continue
 mine_previous() {
     zenity --question --text="The selected Pool IP is ${POOL}. \n The plots directory are: \n `echo ${FILE} | sed -e 's \; \\n g' ` \n ¿Do you want start mining NOW?" 
     case $? in
@@ -73,30 +106,81 @@ mine_previous() {
 
 }
 
+# Open a terminal, launch the dcct miner with the arguments
 mine_pool_now() {
     xterm -hold -e ./mine_pool_all ${POOL} `echo ${FILE} | sed -e 's:\;: :g'`
 }
+# GUI CPU PLOTTER section
+plot_burst() {
+    PLOT_FORM=`zenity  --forms --title="DCCT Plotter GUI" --text="Enter the following values" --separator="," --add-entry="BURST ID" --add-entry="Start nonce" --add-entry="Plot size in GBytes" --add-entry="RAM Memory to plot (MBytes)" --add-entry="CPU Threads"`
+    case $? in
+        0)
+            BURST_ID=$(awk -F, '{print $1}' <<<$PLOT_FORM)
+            START_NONCE=$(awk -F, '{print $2}' <<<$PLOT_FORM)
+            PLOT_SIZE=$(awk -F, '{print $3}' <<<$PLOT_FORM)
+            PLOT_SIZE_NONCES=$(( $PLOT_SIZE * 1024 * 1024 / 256 ))
+            STAGGER_SIZE=$(awk -F, '{print $4}' <<<$PLOT_FORM)
+            STAGGER_SIZE_NONCES=$(( $STAGGER_SIZE * 4 ))
+            THREADS=$(awk -F, '{print $5}' <<<$PLOT_FORM)
+            plot_burst_dir
+            ;;
+        1)
+            dcct_menu 
+            ;;
+        -1)
+            unknown_eror
+            ;;
+    esac
+}
+plot_burst_dir() {
+  zenity --info --text="Now press \"OK\" to select the directory  to save your Plots." 
+    case $? in
+        0)
+            PLOT_DIR=`zenity --file-selection --directory --title="Select the plot directory"`
+            case $? in
+            0)
+                plot_previous
+                ;;
+            1)
+                plot_burst
+                ;;
+            -1)
+                unknown_eror
+                ;;
+            esac
+            ;;
+        1)
+            plot_burst
+            ;;
+       -1)
+            unknown_error
+            ;;
+    esac
 
-dcct_menu() {
- choice=`zenity --width=300 --height=250 --list --column="Select an action" --title="dcct-gui"  \
-           "Plot Burst" \
-           "Mine Burst" \
-           "Optimize plots" \
-           "Help"`
+}
+plot_previous() {
+    zenity --question --text="Plot Info \n\n BURST-ID: ${BURST_ID} \n Start nonce: ${START_NONCE}\n Plot size: ${PLOT_SIZE} GB \( ${PLOT_SIZE_NONCES} nonces \) \n Stagger: ${STAGGER_SIZE} MB \( ${STAGGER_SIZE_NONCES} nonces \) \n CPU threads: ${THREADS} \n ¿Do you want to continue and start plotting?" 
+    case $? in
+        0)
+            start_plotting
+            ;;
+        1)
+            plot_burst
+            ;;
+        -1)
+            unknown_eror
+            ;;
+         *)
+             exit 0
+             ;;
+    esac
 
- case "${choice}" in 
-    "Plot Burst" )
-        zenity --info "A plottearrr"    
-        ;;
-    "Mine Burst" )
-        mine_burst
-        ;;
-    "Optimize plots" )
-        zenity --info "A optimizarrrr"
-        ;;
- esac
 
 
+}
+start_plotting(){
+
+    xterm -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
 }
 
 dcct_menu
