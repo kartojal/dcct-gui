@@ -7,10 +7,11 @@ dcct_menu() {
            "Plot Burst" \
            "Mine Burst" \
            "Optimize plots" \
-           "Help"`
+           "About"`
 
  case "${choice}" in 
     "Plot Burst" )
+        cpu_plot
         plot_burst
         ;;
     "Mine Burst" )
@@ -19,6 +20,9 @@ dcct_menu() {
     "Optimize plots" )
         optimize_plot
         ;;
+    "About")
+        about
+        ;;
      *)
         exit
          ;;
@@ -26,6 +30,32 @@ dcct_menu() {
 
 }
 
+cpu_plot(){
+    CPU_CHOICE=`zenity --width=300 --height=250 --list --column="Select an action" --title="dcct-gui"  \
+               "SSE4 (Recommended)" \
+               "AVX2 (Haswell & Bulldozer CPUs)" \
+               "Default (Slower but support all CPU)" `
+
+    case "${CPU_CHOICE}" in
+       "SSE4 (Recommended)" )
+            CPU_CODE="1"
+            return
+            ;;
+       "AVX2 (Haswell & Bulldozer CPUs)" )
+            CPU_CODE="2"
+            return
+            ;;
+        "Default (Slower but support all CPU)" )
+            CPU_CODE="0"
+            return
+            ;;
+         *)
+             dcct_menu
+             ;;
+     esac
+      
+
+}
 # Mine Burst section
 # First, ask the user the pool IP
 mine_burst() {
@@ -82,6 +112,14 @@ mine_plot_dir(){
             ;;
     esac
             
+}
+about(){
+    zenity --text-info --text "MDCCT tools front end by \"Kartojal\", bash script compiled to C with shc by \"Francisco Rosales\". Mdcct AVX2 and SSE2 support  by \"Mirkic7\". Dcct tools created by \"DCCT\"."
+    case $? in
+        *)
+            dcct_menu
+            ;;
+    esac
 }
 # Unknown error.
 unknown_error(){
@@ -179,8 +217,14 @@ plot_previous() {
 
 }
 start_plotting(){
+    # Thanks to Mirkic7 for MDCCT version with AVX2 and SSE4 support
+    if [ $CPU_CODE > 0 ] ;then
+        xterm -hold -e ./plotavx2 -x ${CPU_CODE} -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
 
-    xterm -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
+    else
+        term -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
+        
+    fi
 }
 
 optimize_plot(){
