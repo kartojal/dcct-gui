@@ -4,9 +4,10 @@ DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.
 NOT FINISHED NOT FINISHED NOT FINISHED NOT FINISHED NOT FINISHED 
 
 # Easy How-To
-  1. Download the binary here.
+  1. Download the binary from here.
   2. Tomorrow will complete it ....
-
+  3. 
+  
 # Features
   - Simple front end
   - Bash binary script (you don't need to run a console for execute it)
@@ -15,12 +16,13 @@ NOT FINISHED NOT FINISHED NOT FINISHED NOT FINISHED NOT FINISHED
   - [...]
 
 # To-do
+  - Multi-arch (Now only 64 bits, soon one script for 32/64/ARM )
   - DCCT Plotter
   - DCCT Optimizer
   - DCCT dev pools 2 Miner
   - [...]
 
-# How-to compile it to binary
+# How-to compile this bash script  it to binary
   You can compile a bash script to binary, with shc by " Francisco Javier Rosales García "
   1. Go here http://www.datsi.fi.upm.es/~frosal/
   2. Download shc-3.8.9.tgz, uncompress, navigate to the dir, compile it ( make on console)
