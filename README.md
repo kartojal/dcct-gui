@@ -1,12 +1,12 @@
 # dcct-gui
-DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.  
+DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.  Thanks to DCCT and Mirkic7 for the binaries!
 
 # Features
   - Simple front end
   - Only one dependency: Zenity (Already installed in Ubuntu)
   - Bash binary script (you don't need to run a console for execute it))
   - Choose a DCCT tool from the list, and follow the windows to run it.
-  - Plot Burst files without console skills.
+  - Plot Burst files without console skills. Plot supports SSE4 and AVX2 by Mirkic7.
   - Mine Burst without console, just select "Mine Burst", write the pool IP and select the plot directories, them        Whoala, dcct miner will run.
   - Optimize plots with only selecting the plot file.
 
