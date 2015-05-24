@@ -12,7 +12,7 @@ DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.
 
 
 # Easy How-To
-  1. Download the pack with dcct + frontend from here.
+  1. Download the pack with dcct + frontend from [here](http://bit.ly/1FIHXUJ).
   2. Uncompress it.
   3. Double click on "dcct-gui".
 
