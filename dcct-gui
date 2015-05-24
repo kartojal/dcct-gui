@@ -17,7 +17,7 @@ dcct_menu() {
         mine_burst
         ;;
     "Optimize plots" )
-        zenity --text-info --text="A optimizarrrr"
+        optimize_plot
         ;;
      *)
         exit
@@ -183,4 +183,36 @@ start_plotting(){
     xterm -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
 }
 
+optimize_plot(){
+    `zenity  --question --title="DCCT Optimizer GUI" --text="Select the plot file to optimize it."`
+    echo $MEMORY
+ case $? in
+        0)
+            FILE=`zenity --file-selection --width=100 --height=100  --title="Select the plot file to optimize it."` 
+
+            case $? in
+                0)
+                    xterm -hold -e ./optimize ${FILE}
+                    ;;
+                1)
+                    optimize_plot
+                    ;;
+                -1)
+                    unknown_error
+                    ;;
+
+            esac
+            ;;
+        1)
+            dcct_menu
+            ;;
+        -1)
+            unknown_error
+            ;;
+         *)
+             exit 0
+             ;;
+    esac
+
+}
 dcct_menu
