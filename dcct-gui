@@ -114,7 +114,8 @@ mine_plot_dir(){
             
 }
 about(){
-    zenity --text-info --text "MDCCT tools front end by \"Kartojal\", bash script compiled to C with shc by \"Francisco Rosales\". Mdcct AVX2 and SSE2 support  by \"Mirkic7\". Dcct tools created by \"DCCT\"."
+    README="./README.md"
+    zenity --text-info --filename=${README}
     case $? in
         *)
             dcct_menu

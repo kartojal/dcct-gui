@@ -12,16 +12,12 @@ DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.
 
 
 # Easy How-To
-  1. Download the binary from here.
-  2. Tomorrow will complete it ....
-  3. 
-  
-
+  1. Download the pack with dcct + frontend from here.
+  2. Uncompress it.
+  3. Double click on "dcct-gui".
 
 # To-do
   - Multi-arch (Now only 64 bits, soon one script for 32/64/ARM )
-  - DCCT Plotter
-  - DCCT Optimizer
   - DCCT dev pools 2 Miner
   - [...]
 
