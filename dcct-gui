@@ -11,19 +11,24 @@ dcct_menu() {
 
  case "${choice}" in 
     "Plot Burst" )
+        choice=""
         cpu_plot
         plot_burst
         ;;
     "Mine Burst" )
+        choice=""
         mine_burst
         ;;
     "Optimize plots" )
+        choice=""
         optimize_plot
         ;;
     "About")
+        choice=""
         about
         ;;
      *)
+        choice=""
         exit
          ;;
  esac
@@ -74,7 +79,6 @@ mine_burst() {
                 unknown_error
                 ;;
         esac   
-        select_plot_dir
         ;;
     1)
         dcct_menu
@@ -230,11 +234,9 @@ start_plotting(){
 
 optimize_plot(){
     `zenity  --question --title="DCCT Optimizer GUI" --text="Select the plot file to optimize it."`
-    echo $MEMORY
  case $? in
         0)
             FILE=`zenity --file-selection --width=100 --height=100  --title="Select the plot file to optimize it."` 
-
             case $? in
                 0)
                     xterm -hold -e ./optimize ${FILE}
@@ -245,6 +247,9 @@ optimize_plot(){
                 -1)
                     unknown_error
                     ;;
+                 *)
+                     echo "quepaso"
+                     ;;
 
             esac
             ;;
