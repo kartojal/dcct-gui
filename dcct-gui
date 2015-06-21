@@ -95,7 +95,7 @@ mine_plot_dir(){
     zenity --info --width=380 --height=90 --text="Now press \"OK\" to select your Plot directory, also you can press CONTROL key to select multiple directories, if you want." 
     case $? in
         0)
-            FILE=`zenity --file-selection --width=100 --height=100 --directory --multiple --separator=";" --title="Select the plot directory"`
+            IFS=$'\n' FILE=($(zenity --file-selection --width=100 --height=100 --directory --multiple --separator=$'\n' --title="Select the plot directory"))
             case $? in
             0)
                 mine_previous
@@ -151,7 +151,9 @@ mine_previous() {
 
 # Open a terminal, launch the dcct miner with the arguments
 mine_pool_now() {
-    xterm -hold -e ./mine_pool_all ${POOL} `echo ${FILE} | sed -e 's:\;: :g'`
+    xterm -hold -e dcct-mine "${POOL}" "${FILE[@]}"
+  # "`echo ${FILE} | sed -e 's:\;: :g' | sed -e 's: :\" \":g' `"
+
 }
 # GUI CPU PLOTTER section
 plot_burst() {
