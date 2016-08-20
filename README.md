@@ -10,7 +10,8 @@ DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.  Thanks to DCCT and Mir
 
 
 # How-to
-´´´
+
+```
 # git clone this repo and Mirkic7 mdcct repo
 git clone https://github.com/kartojal/dcct-gui
 git clone https://github.com/Mirkic7/mdcct
@@ -26,5 +27,5 @@ cp mine mine_pool_all  mine_pool_share optimize plot plotavx2 ../dcct-gui
 cd ../dcct-gui
 bash dcct-gui
 
-´´´
+```
 
