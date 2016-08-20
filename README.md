@@ -1,9 +1,9 @@
 # dcct-gui
-DCCT Tools front-end via Bash &amp; Zenity, by Kartojal.  Thanks to DCCT and Mirkic7 for the binaries!
+DCCT Tools front-end for Linux Distributions via Bash &amp; Zenity, by Kartojal.  Thanks to DCCT and Mirkic7 for the binaries!
 
 # Features
   - Simple front end
-  - Only one dependency: Zenity (Already installed in Ubuntu and Linux Mint)
+  - Dependencies: bash, lxterm, zenity, mdcct
   - Choose a DCCT tool from the list, and follow the windows to run it.
   - Plot supports SSE4 and AVX2 by Mirkic7.
   - Optimize plots with only selecting the plot file.
