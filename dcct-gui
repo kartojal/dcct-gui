@@ -151,7 +151,7 @@ mine_previous() {
 
 # Open a terminal, launch the dcct miner with the arguments
 mine_pool_now() {
-    xterm -hold -e dcct-mine "${POOL}" "${FILE[@]}"
+    lxterm -hold -e dcct-mine "${POOL}" "${FILE[@]}"
   # "`echo ${FILE} | sed -e 's:\;: :g' | sed -e 's: :\" \":g' `"
 
 }
@@ -226,10 +226,10 @@ plot_previous() {
 start_plotting(){
     # Thanks to Mirkic7 for MDCCT version with AVX2 and SSE4 support
     if [ $CPU_CODE > 0 ] ;then
-        xterm -hold -e ./plotavx2 -x ${CPU_CODE} -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
+        lxterm -hold -e ./plotavx2 -x ${CPU_CODE} -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
 
     else
-        term -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
+        lxterm -hold -e ./plot -k ${BURST_ID} -d ${PLOT_DIR} -s ${START_NONCE} -n ${PLOT_SIZE_NONCES} -m ${STAGGER_SIZE_NONCES} -t ${THREADS}
         
     fi
 }
@@ -241,7 +241,7 @@ optimize_plot(){
             FILE=`zenity --file-selection --width=100 --height=100  --title="Select the plot file to optimize it."` 
             case $? in
                 0)
-                    xterm -hold -e ./optimize ${FILE}
+                    lxterm -hold -e ./optimize ${FILE}
                     ;;
                 1)
                     optimize_plot
